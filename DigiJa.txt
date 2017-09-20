@@ -1,0 +1,68 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+ 
+entity alu is
+port(   
+        x,y : in signed(15 downto 0); --input operands
+        zx,nx,zy,ny,f,no: in STD_LOGIC ; --Operation to be performed
+        fxy : out signed(15 downto 0)  --output of ALU
+        );
+end alu;
+ 
+architecture Behavioral of alu is
+ 
+signal s :  STD_LOGIC_vector(5 downto 0);
+begin
+	s(0) <= no;
+	s(1) <= f ;
+	s(2) <= ny;
+	s(3) <= zy;
+	s(4) <= nx;
+	s(5) <= zx;
+ 
+process(x,y,s)
+begin
+ 
+        case S is
+            when "000000" => 
+                fxy<= x and y;  
+            when "000010" => 
+                fxy<= x + y; 
+            when "000111" => 
+                fxy<= y - x; 
+            when "001100" => 
+                fxy<= x; 
+            when "001101" => 
+                fxy<= not x ;               
+            when "001110" => 
+                fxy<= x - 1; 
+            when "001111" => 
+                fxy<= (not x )+ 1 ;  
+            when "010011" => 
+                fxy<= x - y; 
+				when "010101" => 
+                fxy<= x or y; 
+				when "011111" => 
+                fxy<= x + 1; 
+				when "101010" => 
+                fxy<= "0000000000000000";	
+				when "110000" => 
+                fxy<= y;	
+				when "110001" => 
+                fxy<= not y;
+				when "110010" => 
+                fxy<=y - 1;						 
+            when "110011" => 
+                fxy<=(not y) + 1;						 		 
+            when "110111" => 
+                fxy<= y + 1;
+				when "111010" => 
+                fxy<= "1111111111111111";
+				when "111111" => 
+                fxy<= "1111111111111111";
+            when others =>NULL;
+        end case;       
+end process;    
+ 
+end Behavioral;
